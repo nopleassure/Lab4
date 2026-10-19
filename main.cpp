@@ -29,7 +29,7 @@ int main()
         std::cout << "9 - Установить номер трека" << std::endl;
         std::cout << "10 - Обработка массива (статистика)" << std::endl;
         std::cout << "11 - Выход" << std::endl;
-        std::cout << "Введите номер команды";
+        std::cout << "Введите номер команды ";
         std::cin >> command;
 
         index = 0;

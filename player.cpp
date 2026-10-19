@@ -139,3 +139,76 @@ void Player::prevTrack()
         std::cout << "Плеер выключен, включите его" << std::endl;
     }
 }
+
+void Player::setVolume(int newVolume)
+{
+    if (power == false)
+    {
+        std::cout << "Плеер выключен, включите его" << std::endl;
+    }
+    else if (newVolume < 0 || newVolume > 10)
+    {
+        std::cout << "Ошибка: громкость должна быть от 0 до 10" << std::endl;
+    }
+    else
+    {
+        volume = newVolume;
+    }
+}
+
+void Player::setTrack(int newTrack)
+{
+    if (power == false)
+    {
+        std::cout << "Плеер выключен, включите его." << std::endl;
+    }
+    else if (newTrack < 1 || newTrack > 5)
+    {
+        std::cout << "Ошибка: номер трека должен быть от 1 до 5" << std::endl;
+    }
+    else
+    {
+        track = newTrack;
+    }
+}
+
+bool Player::getPower()
+{
+    return power;
+}
+
+bool Player::getPlaying()
+{
+    return playing;
+}
+
+int Player::getVolume()
+{
+    return volume;
+}
+
+int Player::getTrack()
+{
+    return track;
+}
+
+void Player::show()
+{
+    if (power == false)
+    {
+        std::cout << "Плеер выключен" << std::endl;
+    }
+    else
+    {
+        std::cout << "Плеер включён ";
+        if (playing == true)
+        {
+            std::cout << "Состояние: играет ";
+        }
+        else
+        {
+            std::cout << "Состояние: пауза ";
+        }
+        std::cout << "Громкость: " << volume << " Трек: " << track << std::endl;
+    }
+}

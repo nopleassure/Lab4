@@ -1,81 +1,141 @@
 #include <iostream>
 #include <clocale>
-#include "Player.h"
-
-using namespace std;
+#include "player.h"
 
 int main()
 {
-    Player player(true, false, 3, 2);
+    Player players[3];
+    players[1] = Player(true, false, 3, 2);
+    players[2] = Player(true, true, 8, 5);
 
-    int choice = 0;
+    int work = 1;
+    int command;
+    int index;
+    int number;
+    int value;
 
-    while (choice != 10)
+    while (work)
     {
-        cout << "\n===== МЕНЮ ПЛЕЕРА =====\n";
-        cout << "1. Показать состояние плеера\n";
-        cout << "2. Включить/выключить плеер\n";
-        cout << "3. Пуск / Пауза\n";
-        cout << "4. Увеличить громкость\n";
-        cout << "5. Уменьшить громкость\n";
-        cout << "6. Следующий трек\n";
-        cout << "7. Предыдущий трек\n";
-        cout << "8. Установить громкость\n";
-        cout << "9. Установить номер трека\n";
-        cout << "10. Выход\n";
-        cout << "Введите пункт меню: ";
-        cin >> choice;
+        std::cout << std::endl;
+        std::cout << "----- МЕНЮ -----" << std::endl;
+        std::cout << "1 - Показать все плееры" << std::endl;
+        std::cout << "2 - Включить/выключить плеер" << std::endl;
+        std::cout << "3 - Пуск/пауза" << std::endl;
+        std::cout << "4 - Громкость больше" << std::endl;
+        std::cout << "5 - Громкость меньше" << std::endl;
+        std::cout << "6 - Следующий трек" << std::endl;
+        std::cout << "7 - Предыдущий трек" << std::endl;
+        std::cout << "8 - Установить громкость" << std::endl;
+        std::cout << "9 - Установить номер трека" << std::endl;
+        std::cout << "10 - Обработка массива (статистика)" << std::endl;
+        std::cout << "11 - Выход" << std::endl;
+        std::cout << "Введите номер команды";
+        std::cin >> command;
 
-        int val;
+        index = 0;
+        if (command >= 2 && command <= 9)
+        {
+            std::cout << "Введите номер плеера (1-3): ";
+            std::cin >> number;
+            if (number < 1 || number > 3)
+            {
+                std::cout << "Такого плеера нет" << std::endl;
+                continue;
+            }
+            index = number - 1;
+        }
 
-        switch (choice)
+        switch (command)
         {
         case 1:
-            player.show();
+            for (int i = 0; i < 3; i++)
+            {
+                std::cout << "Плеер " << i + 1 << ": ";
+                players[i].show();
+            }
             break;
         case 2:
-            player.changePower();
-            player.show();
+            players[index].changePower();
+            players[index].show();
             break;
         case 3:
-            player.changePlay();
-            player.show();
+            players[index].changePlay();
+            players[index].show();
             break;
         case 4:
-            player.volumeUp();
-            player.show();
+            players[index].volumeUp();
+            players[index].show();
             break;
         case 5:
-            player.volumeDown();
-            player.show();
+            players[index].volumeDown();
+            players[index].show();
             break;
         case 6:
-            player.nextTrack();
-            player.show();
+            players[index].nextTrack();
+            players[index].show();
             break;
         case 7:
-            player.prevTrack();
-            player.show();
+            players[index].prevTrack();
+            players[index].show();
             break;
         case 8:
-            cout << "Введите громкость (0-10): ";
-            cin >> val;
-            player.setVolume(val);
-            player.show();
+            std::cout << "Введите громкость (0-10): ";
+            std::cin >> value;
+            players[index].setVolume(value);
+            players[index].show();
             break;
         case 9:
-            cout << "Введите номер трека (1-5): ";
-            cin >> val;
-            player.setTrack(val);
-            player.show();
+            std::cout << "Введите номер трека (1-5): ";
+            std::cin >> value;
+            players[index].setTrack(value);
+            players[index].show();
             break;
         case 10:
-            cout << "Выход из программы...\n";
+        {
+            int onCount = 0;
+            int playCount = 0;
+            int sumVolume = 0;
+            int maxVolume = -1;
+            int maxIndex = 0;
+
+            for (int i = 0; i < 3; i++)
+            {
+                if (players[i].getPower() == true)
+                {
+                    onCount = onCount + 1;
+                    sumVolume = sumVolume + players[i].getVolume();
+
+                    if (players[i].getVolume() > maxVolume)
+                    {
+                        maxVolume = players[i].getVolume();
+                        maxIndex = i;
+                    }
+                }
+                if (players[i].getPlaying() == true)
+                {
+                    playCount = playCount + 1;
+                }
+            }
+
+            std::cout << "Включено плееров: " << onCount << std::endl;
+            std::cout << "Играет плееров: " << playCount << std::endl;
+            if (onCount > 0)
+            {
+                std::cout << "Средняя громкость включённых: " << (double)sumVolume / onCount << std::endl;
+                std::cout << "Самый громкий плеер: " << maxIndex + 1 << " (громкость " << maxVolume << ")" << std::endl;
+            }
+            else
+            {
+                std::cout << "Все плееры выключены" << std::endl;
+            }
+            break;
+        }
+        case 11:
+            work = 0;
             break;
         default:
-            cout << "Ошибка: неверная команда!\n";
+            std::cout << "Нет такой команды" << std::endl;
         }
     }
-
     return 0;
 }
